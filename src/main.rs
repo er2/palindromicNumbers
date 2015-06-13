@@ -1,10 +1,13 @@
+extern crate num;
+
 use std::env;
+use num::BigUint;
 
 fn main() {
     for input in env::args().skip(1) {
-        match input.parse::<i64>() {
+        match input.parse::<BigUint>() {
             Ok(orig) => {
-                let (result, count) = get_pal(orig, 0);
+                let (result, count) = get_pal(orig.clone(), 0);
                 println!("{} gets palindromic after {} steps: {}",
                     orig, count, result);
             }
@@ -15,23 +18,23 @@ fn main() {
     }
 }
 
-fn get_pal(i: i64, count: i64) -> (i64, i64) {
+fn get_pal(i: BigUint, count: i64) -> (BigUint, i64) {
     if i.is_palindrome() {
         (i, count)
     } else {
-        get_pal(i + i.flip(), count+1)
+        get_pal(&i + &i.flip(), count+1)
     }
 }
 
 trait FlipInt {
-    fn flip(&self) -> i64;
+    fn flip(&self) -> BigUint;
     fn is_palindrome(&self) -> bool;
 }
 
-impl FlipInt for i64 {
-    fn flip(&self) -> i64 {
+impl FlipInt for BigUint {
+    fn flip(&self) -> BigUint {
         reverse(self.to_string())
-            .parse::<i64>().unwrap()
+            .parse::<BigUint>().unwrap()
     }
 
     fn is_palindrome(&self) -> bool {
