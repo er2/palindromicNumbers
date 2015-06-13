@@ -1,8 +1,17 @@
+use std::env;
+
 fn main() {
-    for orig in [11,68].iter() {
-        let (result, count) = get_pal(orig.clone());
-        println!("{} gets palindromic after {} steps: {}",
-            orig, count, result);
+    for input in env::args().skip(1) {
+        match input.parse::<i32>() {
+            Ok(orig) => {
+                let (result, count) = get_pal(orig);
+                println!("{} gets palindromic after {} steps: {}",
+                    orig, count, result);
+            }
+            Err(e) => {
+                println!("error parsing intput: {} {:?}", input, e);
+            }
+        }
     }
 }
 
